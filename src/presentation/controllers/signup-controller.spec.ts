@@ -150,4 +150,28 @@ describe('SignUpController', () => {
     expect(httpResponse.statusCode).toBe(422)
     expect(httpResponse.body).toEqual(new InvalidParamError('email'))
   })
+  // return 500 if Email Validator throws
+  it('should return a 500 error code if Email Validator throws', () => {
+    const { sut, emailValidator } = makeSut()
+
+    jest.spyOn(emailValidator, 'isValid').mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        gender: 'any_gender',
+        email: 'any_email',
+        password: 'any_password',
+        passwordConfirmation: 'any_password',
+      },
+    }
+    const httpResponse = sut.perform(httpRequest)
+
+    expect(httpResponse.statusCode).toBe(500)
+    expect(httpResponse.body).toEqual(
+      new Error('Unexpected Internal Error 500'),
+    )
+  })
 })
