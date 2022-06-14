@@ -1,3 +1,5 @@
 const func = (): string => {
-  return 'Hello'
-}
+  return "Hello";
+};
+
+func();
