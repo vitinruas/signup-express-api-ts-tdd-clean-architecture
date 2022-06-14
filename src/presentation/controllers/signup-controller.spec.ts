@@ -1,5 +1,6 @@
 import { InvalidParamError } from '../errors/invalid-param-error'
 import { MissingParamError } from '../errors/missing-param-error'
+import { ServerError } from '../errors/server-error'
 import { IController } from '../protocols/controller-protocol'
 import { IEmailValidator } from '../protocols/email-validator-protocol'
 import { SignUpController } from './signup-controller'
@@ -170,8 +171,6 @@ describe('SignUpController', () => {
     const httpResponse = sut.perform(httpRequest)
 
     expect(httpResponse.statusCode).toBe(500)
-    expect(httpResponse.body).toEqual(
-      new Error('Unexpected Internal Error 500'),
-    )
+    expect(httpResponse.body).toEqual(new ServerError())
   })
 })
