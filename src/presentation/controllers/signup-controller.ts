@@ -1,9 +1,10 @@
 import { InvalidParamError } from '../errors/invalid-param-error'
 import { MissingParamError } from '../errors/missing-param-error'
 import { badRequest, ok } from '../helpers/http-helper'
+import { IController } from '../protocols/controller-protocol'
 import { IHttpRequest, IHttpResponse } from '../protocols/http-protocol'
 
-export class SignUpController {
+export class SignUpController implements IController {
   perform(httpRequest: IHttpRequest): IHttpResponse {
     // check if all required fields were provided to controller
     const requiredFields = [
