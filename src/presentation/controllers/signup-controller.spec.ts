@@ -1,11 +1,22 @@
 import { InvalidParamError } from '../errors/invalid-param-error'
 import { MissingParamError } from '../errors/missing-param-error'
+import { IController } from '../protocols/controller-protocol'
 import { SignUpController } from './signup-controller'
+
+interface ISut {
+  sut: IController
+}
+const makeSut = (): ISut => {
+  const sut = new SignUpController()
+  return {
+    sut,
+  }
+}
 
 describe('SignUpController', () => {
   // return 400 if name wasn't provided
   it('should return a 400 error code if no name is provided', () => {
-    const sut = new SignUpController()
+    const { sut } = makeSut()
 
     const httpRequest = {
       body: {
@@ -22,7 +33,7 @@ describe('SignUpController', () => {
   })
   // return 400 if gender wasn't provided
   it('should return a 400 error code if no gender is provided', () => {
-    const sut = new SignUpController()
+    const { sut } = makeSut()
 
     const httpRequest = {
       body: {
@@ -39,7 +50,7 @@ describe('SignUpController', () => {
   })
   // return 400 if email wasn't provided
   it('should return a 400 error code if no email is provided', () => {
-    const sut = new SignUpController()
+    const { sut } = makeSut()
 
     const httpRequest = {
       body: {
@@ -56,7 +67,7 @@ describe('SignUpController', () => {
   })
   // return 400 if password wasn't provided
   it('should return a 400 error code if no password is provided', () => {
-    const sut = new SignUpController()
+    const { sut } = makeSut()
 
     const httpRequest = {
       body: {
@@ -73,7 +84,7 @@ describe('SignUpController', () => {
   })
   // return 400 if password confirmation wasn't provided
   it('should return a 400 error code if no password confirmation is provided', () => {
-    const sut = new SignUpController()
+    const { sut } = makeSut()
 
     const httpRequest = {
       body: {
@@ -92,7 +103,7 @@ describe('SignUpController', () => {
   })
   // return 400 if no passwords match
   it('should return a 422 error code if no passwords match', () => {
-    const sut = new SignUpController()
+    const { sut } = makeSut()
 
     const httpRequest = {
       body: {
