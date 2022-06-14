@@ -4,6 +4,7 @@ import { IHttpRequest, IHttpResponse } from '../protocols/http-protocol'
 
 export class SignUpController {
   perform(httpRequest: IHttpRequest): IHttpResponse {
+    // check if all required fields were provided to controller
     const requiredFields = [
       'name',
       'gender',
@@ -16,6 +17,10 @@ export class SignUpController {
       if (!httpRequest.body[field]) {
         return badRequest(400, new MissingParamError(field))
       }
+    }
+    // check if passwords match
+    if (httpRequest.body.password !== httpRequest.body.passwordConfirmation) {
+      return badRequest(422, new Error('Invalid param: passwordConfirmation'))
     }
     return ok(201, 'Successful')
   }
