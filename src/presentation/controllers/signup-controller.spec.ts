@@ -1,15 +1,24 @@
 import { InvalidParamError } from '../errors/invalid-param-error'
 import { MissingParamError } from '../errors/missing-param-error'
 import { IController } from '../protocols/controller-protocol'
+import { IEmailValidator } from '../protocols/email-validator-protocol'
 import { SignUpController } from './signup-controller'
 
 interface ISut {
   sut: IController
+  emailValidator: IEmailValidator
 }
 const makeSut = (): ISut => {
-  const sut = new SignUpController()
+  class EmailValidatorStub implements IEmailValidator {
+    isValid(email: string): boolean {
+      return true
+    }
+  }
+  const emailValidator = new EmailValidatorStub()
+  const sut = new SignUpController(emailValidator)
   return {
     sut,
+    emailValidator,
   }
 }
 
@@ -120,5 +129,25 @@ describe('SignUpController', () => {
     expect(httpResponse.body).toEqual(
       new InvalidParamError('passwordConfirmation'),
     )
+  })
+  // return 422 if invalid email is provided
+  it('should return a 422 error code if invalid email is provided', () => {
+    const { sut, emailValidator } = makeSut()
+
+    jest.spyOn(emailValidator, 'isValid').mockReturnValueOnce(false)
+
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        gender: 'any_gender',
+        email: 'any_email',
+        password: 'any_password',
+        passwordConfirmation: 'any_password',
+      },
+    }
+    const httpResponse = sut.perform(httpRequest)
+
+    expect(httpResponse.statusCode).toBe(422)
+    expect(httpResponse.body).toEqual(new InvalidParamError('email'))
   })
 })
