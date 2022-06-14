@@ -1,3 +1,4 @@
+import { InvalidParamError } from '../errors/invalid-param-error'
 import { MissingParamError } from '../errors/missing-param-error'
 import { badRequest, ok } from '../helpers/http-helper'
 import { IHttpRequest, IHttpResponse } from '../protocols/http-protocol'
@@ -20,7 +21,7 @@ export class SignUpController {
     }
     // check if passwords match
     if (httpRequest.body.password !== httpRequest.body.passwordConfirmation) {
-      return badRequest(422, new Error('Invalid param: passwordConfirmation'))
+      return badRequest(422, new InvalidParamError('passwordConfirmation'))
     }
     return ok(201, 'Successful')
   }

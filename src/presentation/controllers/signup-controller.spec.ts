@@ -1,3 +1,4 @@
+import { InvalidParamError } from '../errors/invalid-param-error'
 import { MissingParamError } from '../errors/missing-param-error'
 import { SignUpController } from './signup-controller'
 
@@ -106,7 +107,7 @@ describe('SignUpController', () => {
 
     expect(httpResponse.statusCode).toBe(422)
     expect(httpResponse.body).toEqual(
-      new Error('Invalid param: passwordConfirmation'),
+      new InvalidParamError('passwordConfirmation'),
     )
   })
 })
