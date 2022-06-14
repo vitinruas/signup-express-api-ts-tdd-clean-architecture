@@ -1,3 +1,4 @@
+import { MissingParamError } from '../errors/missing-param-error'
 import { SignUpController } from './signup-controller'
 
 describe('SignUpController', () => {
@@ -16,7 +17,7 @@ describe('SignUpController', () => {
     const httpResponse = sut.perform(httpRequest)
 
     expect(httpResponse.statusCode).toBe(400)
-    expect(httpResponse.body).toEqual(new Error('Missing param: name'))
+    expect(httpResponse.body).toEqual(new MissingParamError('name'))
   })
   // return 400 if gender wasn't provided
   it('should return a 400 error code if no gender is provided', () => {
@@ -33,7 +34,7 @@ describe('SignUpController', () => {
     const httpResponse = sut.perform(httpRequest)
 
     expect(httpResponse.statusCode).toBe(400)
-    expect(httpResponse.body).toEqual(new Error('Missing param: gender'))
+    expect(httpResponse.body).toEqual(new MissingParamError('gender'))
   })
   // return 400 if email wasn't provided
   it('should return a 400 error code if no email is provided', () => {
@@ -50,7 +51,7 @@ describe('SignUpController', () => {
     const httpResponse = sut.perform(httpRequest)
 
     expect(httpResponse.statusCode).toBe(400)
-    expect(httpResponse.body).toEqual(new Error('Missing param: email'))
+    expect(httpResponse.body).toEqual(new MissingParamError('email'))
   })
   it('should return a 400 error code if no password is provided', () => {
     const sut = new SignUpController()
@@ -66,7 +67,7 @@ describe('SignUpController', () => {
     const httpResponse = sut.perform(httpRequest)
 
     expect(httpResponse.statusCode).toBe(400)
-    expect(httpResponse.body).toEqual(new Error('Missing param: password'))
+    expect(httpResponse.body).toEqual(new MissingParamError('password'))
   })
   it('should return a 400 error code if no password confirmation is provided', () => {
     const sut = new SignUpController()
@@ -83,7 +84,7 @@ describe('SignUpController', () => {
 
     expect(httpResponse.statusCode).toBe(400)
     expect(httpResponse.body).toEqual(
-      new Error('Missing param: passwordConfirmation'),
+      new MissingParamError('passwordConfirmation'),
     )
   })
 })
