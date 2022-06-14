@@ -26,6 +26,7 @@ export class SignUpController implements IController {
         return badRequest(400, new MissingParamError(field))
       }
     }
+
     // check if passwords match
     if (httpRequest.body.password !== httpRequest.body.passwordConfirmation) {
       return badRequest(422, new InvalidParamError('passwordConfirmation'))
