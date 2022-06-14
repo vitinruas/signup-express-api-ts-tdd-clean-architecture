@@ -53,6 +53,7 @@ describe('SignUpController', () => {
     expect(httpResponse.statusCode).toBe(400)
     expect(httpResponse.body).toEqual(new MissingParamError('email'))
   })
+  // return 400 if password wasn't provided
   it('should return a 400 error code if no password is provided', () => {
     const sut = new SignUpController()
 
@@ -69,6 +70,7 @@ describe('SignUpController', () => {
     expect(httpResponse.statusCode).toBe(400)
     expect(httpResponse.body).toEqual(new MissingParamError('password'))
   })
+  // return 400 if password confirmation wasn't provided
   it('should return a 400 error code if no password confirmation is provided', () => {
     const sut = new SignUpController()
 
@@ -85,6 +87,26 @@ describe('SignUpController', () => {
     expect(httpResponse.statusCode).toBe(400)
     expect(httpResponse.body).toEqual(
       new MissingParamError('passwordConfirmation'),
+    )
+  })
+  // return 400 if no passwords match
+  it('should return a 422 error code if no passwords match', () => {
+    const sut = new SignUpController()
+
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        gender: 'any_gender',
+        email: 'any_email',
+        password: 'diff_password_1',
+        passwordConfirmation: 'diff_password_2',
+      },
+    }
+    const httpResponse = sut.perform(httpRequest)
+
+    expect(httpResponse.statusCode).toBe(422)
+    expect(httpResponse.body).toEqual(
+      new Error('Invalid param: passwordConfirmation'),
     )
   })
 })
