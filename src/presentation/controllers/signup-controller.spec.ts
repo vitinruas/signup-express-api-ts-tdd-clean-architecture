@@ -15,13 +15,17 @@ interface ISut {
   emailValidator: IEmailValidator
   addAccount: IAddAccount
 }
-const makeSut = (): ISut => {
+
+const makeEmailValidatorStub = () => {
   class EmailValidatorStub implements IEmailValidator {
     isValid(email: string): boolean {
       return true
     }
   }
+  return new EmailValidatorStub()
+}
 
+const makeAddAccountStub = () => {
   class AddAccountStub implements IAddAccount {
     add(newAccountData: INewAccountData): IAccountEntitie {
       return {
@@ -33,9 +37,12 @@ const makeSut = (): ISut => {
       }
     }
   }
+  return new AddAccountStub()
+}
 
-  const emailValidator = new EmailValidatorStub()
-  const addAccount = new AddAccountStub()
+const makeSut = (): ISut => {
+  const emailValidator = makeEmailValidatorStub()
+  const addAccount = makeAddAccountStub()
   const sut = new SignUpController(emailValidator, addAccount)
   return {
     sut,
