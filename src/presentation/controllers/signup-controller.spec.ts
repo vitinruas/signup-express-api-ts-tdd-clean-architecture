@@ -213,7 +213,7 @@ describe('SignUpController', () => {
     expect(httpResponse.body).toEqual(new ServerError())
   })
   // return 201 if a valid email is provided
-  it('should return a 201 success code if a valid email is provided', () => {
+  it('should ensure SignUpController returns 201 if a valid email is provided', () => {
     const { sut } = makeSut()
 
     const httpRequest = {
@@ -249,5 +249,29 @@ describe('SignUpController', () => {
     const httpResponse = sut.perform(httpRequest)
 
     expect(httpResponse.statusCode).toBe(500)
+  })
+  // calls
+  it('should calls Add Account with correct values', () => {
+    const { sut, addAccount } = makeSut()
+
+    const addSpy = jest.spyOn(addAccount, 'add')
+
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        gender: 'N',
+        email: 'any_email',
+        password: 'any_password',
+        passwordConfirmation: 'any_password',
+      },
+    }
+    sut.perform(httpRequest)
+
+    expect(addSpy).toHaveBeenCalledWith({
+      name: 'any_name',
+      gender: 'N',
+      email: 'any_email',
+      password: 'any_password',
+    })
   })
 })
