@@ -32,30 +32,33 @@ export class SignUpController implements IController {
       }
     }
 
+    const { name, gender, email, password, passwordConfirmation } =
+      httpRequest.body
+
     // check if valid gender was provided
     const listGender = ['M', 'F', 'O', 'N']
-    if (!listGender.includes(httpRequest.body.gender)) {
+    if (!listGender.includes(gender)) {
       return badRequest(422, new InvalidParamError('gender'))
     }
 
     // check if passwords match
-    if (httpRequest.body.password !== httpRequest.body.passwordConfirmation) {
+    if (password !== passwordConfirmation) {
       return badRequest(422, new InvalidParamError('passwordConfirmation'))
     }
 
     try {
-      // check if valid email was provided
-      const isValid = this.emailValidator.isValid(httpRequest.body.email)
+      // check if the email is valid
+      const isValid = this.emailValidator.isValid(email)
       if (!isValid) {
         return badRequest(422, new InvalidParamError('email'))
       }
 
       // create a new account and return it
       const createdAccount: IAccountEntitie = this.addAccount.add({
-        name: httpRequest.body.name,
-        gender: httpRequest.body.gender,
-        email: httpRequest.body.email,
-        password: httpRequest.body.password,
+        name,
+        gender,
+        email,
+        password,
       })
       return ok(201, createdAccount)
     } catch (error) {
