@@ -62,7 +62,7 @@ export class SignUpController implements IController {
         return badRequest(422, new InvalidParamError('email'))
       }
 
-      // check if provided email already exists
+      // check if the provided email already exists
       const alreadyExists = await this.checkEmail.check(email)
       if (alreadyExists) {
         return badRequest(400, new ParamAlreadyExistsError('email'))

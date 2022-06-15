@@ -231,7 +231,7 @@ describe('SignUpController', () => {
     expect(httpResponse.body).toEqual(new ServerError())
   })
   // calls Email Validator with correct values
-  it('should return a 201 success code and calls Email Validator with correct values', async () => {
+  it('should calls Email Validator with correct values', async () => {
     const { sut, emailValidator } = makeSut()
 
     const isValid = jest.spyOn(emailValidator, 'isValid')
