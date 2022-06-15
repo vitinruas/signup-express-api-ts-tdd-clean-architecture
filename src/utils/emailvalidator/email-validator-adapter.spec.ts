@@ -29,14 +29,6 @@ describe('Email Validator', () => {
 
     expect(response).toBe(true)
   })
-  // return true if valid email was provided
-  it('should return true if valid email is provided', () => {
-    const sut = makeSut()
-
-    const response = sut.isValid('valid_email')
-
-    expect(response).toBe(true)
-  })
   // calls Email Validator with correct values
   it('should calls Email Validator with correct values', () => {
     const sut = makeSut()
