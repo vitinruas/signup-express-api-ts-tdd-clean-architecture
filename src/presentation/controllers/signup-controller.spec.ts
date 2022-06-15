@@ -7,6 +7,7 @@ import { InvalidParamError, MissingParamError, ServerError } from '../errors'
 import { IController, IEmailValidator } from './signup-controller-protocols'
 import { SignUpController } from './signup-controller'
 import { ICheckEmail } from '../../domain/usecase/check-email-usecase'
+import { ParamAlreadyExistsError } from '../errors/param-exists-error'
 
 interface ISut {
   sut: IController
@@ -306,7 +307,7 @@ describe('SignUpController', () => {
     const httpResponse = await sut.perform(httpRequest)
 
     expect(httpResponse.statusCode).toBe(400)
-    expect(httpResponse.body).toEqual(new Error('Param Already Exists: email'))
+    expect(httpResponse.body).toEqual(new ParamAlreadyExistsError('email'))
   })
   // return 500 if Add Account throws
   it('should return a 500 error code if Add Account throws', async () => {

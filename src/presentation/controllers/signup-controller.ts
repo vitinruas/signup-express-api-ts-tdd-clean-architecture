@@ -9,6 +9,7 @@ import {
   IHttpRequest,
   IHttpResponse,
 } from './signup-controller-protocols'
+import { ParamAlreadyExistsError } from '../errors/param-exists-error'
 
 export class SignUpController implements IController {
   private readonly checkEmail: ICheckEmail
@@ -61,10 +62,10 @@ export class SignUpController implements IController {
         return badRequest(422, new InvalidParamError('email'))
       }
 
+      // check if provided email already exists
       const alreadyExists = await this.checkEmail.check(email)
-
       if (alreadyExists) {
-        return badRequest(400, new Error('Param Already Exists: email'))
+        return badRequest(400, new ParamAlreadyExistsError('email'))
       }
 
       // create a new account and return it
