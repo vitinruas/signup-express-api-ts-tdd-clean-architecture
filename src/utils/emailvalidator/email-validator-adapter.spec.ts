@@ -18,6 +18,15 @@ describe('Email Validator', () => {
     jest.spyOn(validator, 'isEmail').mockReturnValueOnce(false)
 
     const response = await sut.isValid('invalid_email')
+
     expect(response).toBe(false)
+  })
+  // return true if valid email was provided
+  it('should return true if valid email is provided', async () => {
+    const sut = makeSut()
+
+    const response = await sut.isValid('valid_email')
+
+    expect(response).toBe(true)
   })
 })
