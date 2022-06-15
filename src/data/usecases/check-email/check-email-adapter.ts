@@ -1,5 +1,5 @@
-import { ICheckEmail } from '../../domain/usecase/check-email-usecase'
-import { ICheckEmailRepository } from '../protocols/check-email-repository'
+import { ICheckEmail } from '../../../domain/usecase/check-email-usecase'
+import { ICheckEmailRepository } from '../../protocols/check-email/check-email-repository'
 
 export class CheckEmailAdapter implements ICheckEmail {
   private readonly checkEmailRepository: ICheckEmailRepository

@@ -1,10 +1,10 @@
-import { IAccountEntitie } from '../../domain/entities/account-entitie'
+import { IAccountEntitie } from '../../../domain/entities/account-entitie'
 import {
   IAddAccount,
   INewAccountData,
-} from '../../domain/usecase/add-account-usecase'
-import { IAddAccountRepository } from '../protocols/add-account-repository'
-import { IEncrypter } from '../protocols/encrypter-protocol'
+} from '../../../domain/usecase/add-account-usecase'
+import { IAddAccountRepository } from '../../protocols/add-account/add-account-repository'
+import { IEncrypter } from '../../protocols/add-account/encrypter-protocol'
 import { AddAccountAdapter } from './add-account-adapter'
 
 const makeEncrypterStub = (): IEncrypter => {
