@@ -146,4 +146,23 @@ describe('Add Account Adapter', () => {
       password: 'hashed_password',
     })
   })
+  // return throw if AdapterAccountRepository throws
+  it('should throw if AdapterAccountRepository throws', async () => {
+    const { sut, addAccountRepository } = makeSut()
+
+    jest.spyOn(addAccountRepository, 'add').mockImplementationOnce(() => {
+      return Promise.reject(new Error())
+    })
+
+    const newAccountData: INewAccountData = {
+      name: 'any_name',
+      gender: 'N',
+      email: 'any_email@mail.com',
+      password: 'any_password',
+    }
+
+    const response = sut.add(newAccountData)
+
+    await expect(response).rejects.toThrow()
+  })
 })
