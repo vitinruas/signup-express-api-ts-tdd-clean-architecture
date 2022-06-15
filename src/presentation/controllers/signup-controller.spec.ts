@@ -15,6 +15,7 @@ const makeSut = (): ISut => {
       return true
     }
   }
+
   const emailValidator = new EmailValidatorStub()
   const sut = new SignUpController(emailValidator)
   return {
@@ -30,7 +31,7 @@ describe('SignUpController', () => {
 
     const httpRequest = {
       body: {
-        gender: 'any_gender',
+        gender: 'N',
         email: 'any_email',
         password: 'any_password',
         passwordConfirmation: 'any_password',
@@ -65,7 +66,7 @@ describe('SignUpController', () => {
     const httpRequest = {
       body: {
         name: 'any_name',
-        gender: 'any_gender',
+        gender: 'N',
         password: 'any_password',
         passwordConfirmation: 'any_password',
       },
@@ -82,7 +83,7 @@ describe('SignUpController', () => {
     const httpRequest = {
       body: {
         name: 'any_name',
-        gender: 'any_gender',
+        gender: 'N',
         email: 'any_email',
         passwordConfirmation: 'any_password',
       },
@@ -99,7 +100,7 @@ describe('SignUpController', () => {
     const httpRequest = {
       body: {
         name: 'any_name',
-        gender: 'any_gender',
+        gender: 'N',
         email: 'any_email',
         password: 'any_password',
       },
@@ -111,6 +112,24 @@ describe('SignUpController', () => {
       new MissingParamError('passwordConfirmation'),
     )
   })
+  // return 400 if invalid gender is provided
+  it('should return a 422 error code if invalid gender is provided', () => {
+    const { sut } = makeSut()
+
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        gender: 'any_gender',
+        email: 'any_email',
+        password: 'any_password',
+        passwordConfirmation: 'any_password',
+      },
+    }
+    const httpResponse = sut.perform(httpRequest)
+
+    expect(httpResponse.statusCode).toBe(422)
+    expect(httpResponse.body).toEqual(new InvalidParamError('gender'))
+  })
   // return 400 if no passwords match
   it('should return a 422 error code if no passwords match', () => {
     const { sut } = makeSut()
@@ -118,7 +137,7 @@ describe('SignUpController', () => {
     const httpRequest = {
       body: {
         name: 'any_name',
-        gender: 'any_gender',
+        gender: 'N',
         email: 'any_email',
         password: 'diff_password_1',
         passwordConfirmation: 'diff_password_2',
@@ -140,7 +159,7 @@ describe('SignUpController', () => {
     const httpRequest = {
       body: {
         name: 'any_name',
-        gender: 'any_gender',
+        gender: 'N',
         email: 'any_email',
         password: 'any_password',
         passwordConfirmation: 'any_password',
@@ -162,7 +181,7 @@ describe('SignUpController', () => {
     const httpRequest = {
       body: {
         name: 'any_name',
-        gender: 'any_gender',
+        gender: 'N',
         email: 'any_email',
         password: 'any_password',
         passwordConfirmation: 'any_password',
@@ -180,7 +199,7 @@ describe('SignUpController', () => {
     const httpRequest = {
       body: {
         name: 'any_name',
-        gender: 'any_gender',
+        gender: 'N',
         email: 'any_email',
         password: 'any_password',
         passwordConfirmation: 'any_password',
