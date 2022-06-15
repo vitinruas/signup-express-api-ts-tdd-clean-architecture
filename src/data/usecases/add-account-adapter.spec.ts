@@ -124,4 +124,26 @@ describe('Add Account Adapter', () => {
 
     await expect(response).rejects.toThrow()
   })
+  // calls AddAccountRepository with correct values
+  it('should calls AddAccountRepository with correct values', async () => {
+    const { sut, addAccountRepository } = makeSut()
+
+    const addSpy = jest.spyOn(addAccountRepository, 'add')
+
+    const newAccountData: INewAccountData = {
+      name: 'any_name',
+      gender: 'N',
+      email: 'any_email@mail.com',
+      password: 'any_password',
+    }
+
+    await sut.add(newAccountData)
+
+    expect(addSpy).toHaveBeenCalledWith({
+      name: 'any_name',
+      gender: 'N',
+      email: 'any_email@mail.com',
+      password: 'hashed_password',
+    })
+  })
 })
