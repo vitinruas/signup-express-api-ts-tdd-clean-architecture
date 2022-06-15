@@ -53,4 +53,18 @@ describe('Email Check Validator', () => {
 
     expect(response).toBe(true)
   })
+  // return throw if CheckEmailRepository throws
+  it('should return throw if CheckEmailRepository throws', async () => {
+    const { sut, checkEmailRepository } = makeSut()
+
+    jest.spyOn(checkEmailRepository, 'find').mockImplementationOnce(() => {
+      return Promise.reject(new Error())
+    })
+
+    const email = 'any_email@mail.com'
+
+    const response = sut.check(email)
+
+    await expect(response).rejects.toThrow()
+  })
 })
