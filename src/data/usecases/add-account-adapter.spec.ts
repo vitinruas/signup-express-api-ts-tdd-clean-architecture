@@ -90,4 +90,19 @@ describe('Add Account Adapter', () => {
 
     expect(encryptSpy).toBeCalledWith('any_password')
   })
+  // return a hashed password
+  it('should EncrypterAdapter returns a hashed password', async () => {
+    const { sut } = makeSut()
+
+    const newAccountData: INewAccountData = {
+      name: 'any_name',
+      gender: 'N',
+      email: 'any_email@mail.com',
+      password: 'any_password',
+    }
+
+    const response = await sut.add(newAccountData)
+
+    expect(response.password).toBe('hashed_password')
+  })
 })
