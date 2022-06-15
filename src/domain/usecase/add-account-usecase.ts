@@ -8,5 +8,5 @@ export interface INewAccountData {
 }
 
 export interface IAddAccount {
-  add(newAccountData: INewAccountData): IAccountEntitie
+  add(newAccountData: INewAccountData): Promise<IAccountEntitie>
 }

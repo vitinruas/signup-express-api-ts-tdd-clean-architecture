@@ -17,7 +17,7 @@ export class SignUpController implements IController {
     this.addAccount = addAccount
   }
 
-  perform(httpRequest: IHttpRequest): IHttpResponse {
+  async perform(httpRequest: IHttpRequest): Promise<IHttpResponse> {
     // check if all required fields were provided to controller
     const requiredFields = [
       'name',
@@ -32,6 +32,7 @@ export class SignUpController implements IController {
       }
     }
 
+    // destructure body
     const { name, gender, email, password, passwordConfirmation } =
       httpRequest.body
 
@@ -48,13 +49,13 @@ export class SignUpController implements IController {
 
     try {
       // check if the email is valid
-      const isValid = this.emailValidator.isValid(email)
+      const isValid = await this.emailValidator.isValid(email)
       if (!isValid) {
         return badRequest(422, new InvalidParamError('email'))
       }
 
       // create a new account and return it
-      const createdAccount: IAccountEntitie = this.addAccount.add({
+      const createdAccount: IAccountEntitie = await this.addAccount.add({
         name,
         gender,
         email,
