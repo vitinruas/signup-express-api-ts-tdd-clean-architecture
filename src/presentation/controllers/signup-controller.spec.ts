@@ -269,6 +269,45 @@ describe('SignUpController', () => {
 
     expect(httpResponse.statusCode).toBe(500)
   })
+  // calls CheckEmail with correct values
+  it('should calls CheckEmail with correct values', async () => {
+    const { sut, checkEmail } = makeSut()
+
+    const checkSpy = jest.spyOn(checkEmail, 'check')
+
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        gender: 'N',
+        email: 'any_email',
+        password: 'any_password',
+        passwordConfirmation: 'any_password',
+      },
+    }
+    await sut.perform(httpRequest)
+
+    expect(checkSpy).toHaveBeenCalledWith('any_email')
+  })
+  // return a 400 error code if Email Already Exists
+  it('should return a 400 error code if Email Already Exists', async () => {
+    const { sut, checkEmail } = makeSut()
+
+    jest.spyOn(checkEmail, 'check').mockReturnValueOnce(Promise.resolve(true))
+
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        gender: 'N',
+        email: 'any_email',
+        password: 'any_password',
+        passwordConfirmation: 'any_password',
+      },
+    }
+    const httpResponse = await sut.perform(httpRequest)
+
+    expect(httpResponse.statusCode).toBe(400)
+    expect(httpResponse.body).toEqual(new Error('Param Already Exists: email'))
+  })
   // return 500 if Add Account throws
   it('should return a 500 error code if Add Account throws', async () => {
     const { sut, addAccount } = makeSut()
