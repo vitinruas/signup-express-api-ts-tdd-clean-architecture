@@ -1,12 +1,13 @@
 import { IAccountEntitie } from '../../domain/entities/account-entitie'
 import { IAddAccount } from '../../domain/usecase/add-account-usecase'
-import { InvalidParamError } from '../errors/invalid-param-error'
-import { MissingParamError } from '../errors/missing-param-error'
-import { ServerError } from '../errors/server-error'
+import { InvalidParamError, MissingParamError, ServerError } from '../errors'
 import { badRequest, ok } from '../helpers/http-helper'
-import { IController } from '../protocols/controller-protocol'
-import { IEmailValidator } from '../protocols/email-validator-protocol'
-import { IHttpRequest, IHttpResponse } from '../protocols/http-protocol'
+import {
+  IController,
+  IEmailValidator,
+  IHttpRequest,
+  IHttpResponse,
+} from './signup-controller-protocols'
 
 export class SignUpController implements IController {
   private readonly emailValidator: IEmailValidator

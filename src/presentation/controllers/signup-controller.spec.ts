@@ -3,11 +3,8 @@ import {
   IAddAccount,
   INewAccountData,
 } from '../../domain/usecase/add-account-usecase'
-import { InvalidParamError } from '../errors/invalid-param-error'
-import { MissingParamError } from '../errors/missing-param-error'
-import { ServerError } from '../errors/server-error'
-import { IController } from '../protocols/controller-protocol'
-import { IEmailValidator } from '../protocols/email-validator-protocol'
+import { InvalidParamError, MissingParamError, ServerError } from '../errors'
+import { IController, IEmailValidator } from './signup-controller-protocols'
 import { SignUpController } from './signup-controller'
 
 interface ISut {
@@ -16,7 +13,7 @@ interface ISut {
   addAccount: IAddAccount
 }
 
-const makeEmailValidatorStub = () => {
+const makeEmailValidatorStub = (): IEmailValidator => {
   class EmailValidatorStub implements IEmailValidator {
     isValid(email: string): boolean {
       return true
@@ -25,7 +22,7 @@ const makeEmailValidatorStub = () => {
   return new EmailValidatorStub()
 }
 
-const makeAddAccountStub = () => {
+const makeAddAccountStub = (): IAddAccount => {
   class AddAccountStub implements IAddAccount {
     add(newAccountData: INewAccountData): IAccountEntitie {
       return {
