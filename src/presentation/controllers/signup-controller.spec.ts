@@ -15,8 +15,8 @@ interface ISut {
 
 const makeEmailValidatorStub = (): IEmailValidator => {
   class EmailValidatorStub implements IEmailValidator {
-    async isValid(email: string): Promise<boolean> {
-      return Promise.resolve(true)
+    isValid(email: string): boolean {
+      return true
     }
   }
   return new EmailValidatorStub()
@@ -178,9 +178,7 @@ describe('SignUpController', () => {
   it('should return a 422 error code if invalid email is provided', async () => {
     const { sut, emailValidator } = makeSut()
 
-    jest
-      .spyOn(emailValidator, 'isValid')
-      .mockReturnValueOnce(Promise.resolve(false))
+    jest.spyOn(emailValidator, 'isValid').mockReturnValueOnce(false)
 
     const httpRequest = {
       body: {
@@ -201,7 +199,7 @@ describe('SignUpController', () => {
     const { sut, emailValidator } = makeSut()
 
     jest.spyOn(emailValidator, 'isValid').mockImplementationOnce(() => {
-      return Promise.reject(new Error())
+      throw new Error()
     })
 
     const httpRequest = {

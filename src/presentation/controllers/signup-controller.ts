@@ -49,7 +49,7 @@ export class SignUpController implements IController {
 
     try {
       // check if the email is valid
-      const isValid = await this.emailValidator.isValid(email)
+      const isValid = this.emailValidator.isValid(email)
       if (!isValid) {
         return badRequest(422, new InvalidParamError('email'))
       }
