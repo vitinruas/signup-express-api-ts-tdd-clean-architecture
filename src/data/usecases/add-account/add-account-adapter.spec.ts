@@ -3,8 +3,10 @@ import {
   IAddAccount,
   INewAccountData,
 } from '../../../domain/usecase/add-account-usecase'
-import { IAddAccountRepository } from '../../protocols/add-account/add-account-repository'
-import { IEncrypter } from '../../protocols/add-account/encrypter-protocol'
+import {
+  IEncrypter,
+  IAddAccountRepository,
+} from './add-account-adapter-protocols'
 import { AddAccountAdapter } from './add-account-adapter'
 
 const makeEncrypterStub = (): IEncrypter => {
