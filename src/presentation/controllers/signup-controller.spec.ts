@@ -1,3 +1,8 @@
+import { IAccountEntitie } from '../../domain/entities/account-entitie'
+import {
+  IAddAccount,
+  INewAccountData,
+} from '../../domain/usecase/add-account-usecase'
 import { InvalidParamError } from '../errors/invalid-param-error'
 import { MissingParamError } from '../errors/missing-param-error'
 import { ServerError } from '../errors/server-error'
@@ -8,6 +13,7 @@ import { SignUpController } from './signup-controller'
 interface ISut {
   sut: IController
   emailValidator: IEmailValidator
+  addAccount: IAddAccount
 }
 const makeSut = (): ISut => {
   class EmailValidatorStub implements IEmailValidator {
@@ -16,11 +22,25 @@ const makeSut = (): ISut => {
     }
   }
 
+  class AddAccountStub implements IAddAccount {
+    add(newAccountData: INewAccountData): IAccountEntitie {
+      return {
+        id: 'valid_id',
+        name: 'valid_name',
+        gender: 'N',
+        email: 'valid_id',
+        password: 'valid_password',
+      }
+    }
+  }
+
   const emailValidator = new EmailValidatorStub()
-  const sut = new SignUpController(emailValidator)
+  const addAccount = new AddAccountStub()
+  const sut = new SignUpController(emailValidator, addAccount)
   return {
     sut,
     emailValidator,
+    addAccount,
   }
 }
 
@@ -208,5 +228,26 @@ describe('SignUpController', () => {
     const httpResponse = sut.perform(httpRequest)
 
     expect(httpResponse.statusCode).toBe(201)
+  })
+  // return 500 if Add Account throws
+  it('should return a 500 error code if Add Account throws', () => {
+    const { sut, addAccount } = makeSut()
+
+    jest.spyOn(addAccount, 'add').mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        gender: 'N',
+        email: 'any_email',
+        password: 'any_password',
+        passwordConfirmation: 'any_password',
+      },
+    }
+    const httpResponse = sut.perform(httpRequest)
+
+    expect(httpResponse.statusCode).toBe(500)
   })
 })
