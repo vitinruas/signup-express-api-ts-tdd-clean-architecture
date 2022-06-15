@@ -7,7 +7,7 @@ export class CheckEmailAdapter implements ICheckEmail {
     this.checkEmailRepository = checkEmailRepository
   }
 
-  async check(email: string): Promise<any> {
+  async check(email: string): Promise<boolean> {
     const alreadyExists = await this.checkEmailRepository.find(email)
     if (alreadyExists) return true
     return false

@@ -1,3 +1,3 @@
 export interface ICheckEmailRepository {
-  find(email: string): Promise<object>
+  find(email: string): Promise<boolean>
 }
