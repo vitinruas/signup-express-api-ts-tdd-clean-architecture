@@ -1,3 +1,5 @@
+import { IAccountEntitie } from '../../domain/entities/account-entitie'
+import { IAddAccount } from '../../domain/usecase/add-account-usecase'
 import { InvalidParamError } from '../errors/invalid-param-error'
 import { MissingParamError } from '../errors/missing-param-error'
 import { ServerError } from '../errors/server-error'
@@ -8,8 +10,10 @@ import { IHttpRequest, IHttpResponse } from '../protocols/http-protocol'
 
 export class SignUpController implements IController {
   private readonly emailValidator: IEmailValidator
-  constructor(emailValidator: IEmailValidator) {
+  private readonly addAccount: IAddAccount
+  constructor(emailValidator: IEmailValidator, addAccount: IAddAccount) {
     this.emailValidator = emailValidator
+    this.addAccount = addAccount
   }
 
   perform(httpRequest: IHttpRequest): IHttpResponse {
@@ -44,7 +48,15 @@ export class SignUpController implements IController {
       if (!isValid) {
         return badRequest(422, new InvalidParamError('email'))
       }
-      return ok(201, 'Successful')
+
+      // create a new account and return it
+      const createdAccount: IAccountEntitie = this.addAccount.add({
+        name: httpRequest.body.name,
+        gender: httpRequest.body.gender,
+        email: httpRequest.body.email,
+        password: httpRequest.body.password,
+      })
+      return ok(201, createdAccount)
     } catch (error) {
       return badRequest(500, new ServerError())
     }
