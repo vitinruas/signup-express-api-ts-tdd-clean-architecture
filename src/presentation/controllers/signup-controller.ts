@@ -1,3 +1,4 @@
+import { ICheckEmail } from '../../domain/usecase/check-email-usecase'
 import { IAccountEntitie } from '../../domain/entities/account-entitie'
 import { IAddAccount } from '../../domain/usecase/add-account-usecase'
 import { InvalidParamError, MissingParamError, ServerError } from '../errors'
@@ -10,10 +11,16 @@ import {
 } from './signup-controller-protocols'
 
 export class SignUpController implements IController {
+  private readonly checkEmail: ICheckEmail
   private readonly emailValidator: IEmailValidator
   private readonly addAccount: IAddAccount
-  constructor(emailValidator: IEmailValidator, addAccount: IAddAccount) {
+  constructor(
+    emailValidator: IEmailValidator,
+    checkEmail: ICheckEmail,
+    addAccount: IAddAccount,
+  ) {
     this.emailValidator = emailValidator
+    this.checkEmail = checkEmail
     this.addAccount = addAccount
   }
 
@@ -52,6 +59,12 @@ export class SignUpController implements IController {
       const isValid = this.emailValidator.isValid(email)
       if (!isValid) {
         return badRequest(422, new InvalidParamError('email'))
+      }
+
+      const alreadyExists = await this.checkEmail.check(email)
+
+      if (alreadyExists) {
+        return badRequest(400, new Error('Param Already Exists: email'))
       }
 
       // create a new account and return it

@@ -7,19 +7,21 @@ import { IAddAccountRepository } from '../protocols/add-account-repository'
 import { IEncrypter } from '../protocols/encrypter-protocol'
 
 export class AddAccountAdapter implements IAddAccount {
-  private readonly encrypter: IEncrypter
+  private readonly encrypterAdapter: IEncrypter
   private readonly addAccountRepository: IAddAccountRepository
 
   constructor(
-    encrypter: IEncrypter,
+    encrypterAdapter: IEncrypter,
     addAccountRepository: IAddAccountRepository,
   ) {
-    this.encrypter = encrypter
+    this.encrypterAdapter = encrypterAdapter
     this.addAccountRepository = addAccountRepository
   }
 
   async add(newAccountData: INewAccountData): Promise<IAccountEntitie> {
-    const hashedPassword = await this.encrypter.encrypt(newAccountData.password)
+    const hashedPassword = await this.encrypterAdapter.encrypt(
+      newAccountData.password,
+    )
     const createdAccount = await this.addAccountRepository.add(
       Object.assign({}, newAccountData, { password: hashedPassword }),
     )
