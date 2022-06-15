@@ -1,5 +1,7 @@
-import { ICheckEmail } from '../../../domain/usecase/check-email-usecase'
-import { ICheckEmailRepository } from '../../protocols/check-email/check-email-repository'
+import {
+  ICheckEmail,
+  ICheckEmailRepository,
+} from './check-email-adapter-protocols'
 import { CheckEmailAdapter } from './check-email-adapter'
 
 const makeCheckEmailRepositoryStub = (): ICheckEmailRepository => {
