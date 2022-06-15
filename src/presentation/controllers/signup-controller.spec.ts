@@ -136,14 +136,14 @@ describe('SignUpController', () => {
       new MissingParamError('passwordConfirmation'),
     )
   })
-  // return 400 if invalid gender is provided
+  // return 422 if invalid gender is provided
   it('should return a 422 error code if invalid gender is provided', () => {
     const { sut } = makeSut()
 
     const httpRequest = {
       body: {
         name: 'any_name',
-        gender: 'any_gender',
+        gender: 'invalid_gender',
         email: 'any_email',
         password: 'any_password',
         passwordConfirmation: 'any_password',
@@ -154,7 +154,7 @@ describe('SignUpController', () => {
     expect(httpResponse.statusCode).toBe(422)
     expect(httpResponse.body).toEqual(new InvalidParamError('gender'))
   })
-  // return 400 if no passwords match
+  // return 422 if no passwords match
   it('should return a 422 error code if no passwords match', () => {
     const { sut } = makeSut()
 
@@ -184,7 +184,7 @@ describe('SignUpController', () => {
       body: {
         name: 'any_name',
         gender: 'N',
-        email: 'any_email',
+        email: 'invalid_email',
         password: 'any_password',
         passwordConfirmation: 'any_password',
       },
