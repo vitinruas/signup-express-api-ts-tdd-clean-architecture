@@ -105,4 +105,23 @@ describe('Add Account Adapter', () => {
 
     expect(response.password).toBe('hashed_password')
   })
+  // return throw if EncrypterAdapter throws
+  it('should return throw if EncrypterAdapter throws', async () => {
+    const { sut, encrypterAdapter } = makeSut()
+
+    jest.spyOn(encrypterAdapter, 'encrypt').mockImplementationOnce(() => {
+      return Promise.reject(new Error())
+    })
+
+    const newAccountData: INewAccountData = {
+      name: 'any_name',
+      gender: 'N',
+      email: 'any_email@mail.com',
+      password: 'any_password',
+    }
+
+    const response = sut.add(newAccountData)
+
+    await expect(response).rejects.toThrow()
+  })
 })
