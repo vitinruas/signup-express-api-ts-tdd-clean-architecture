@@ -1,17 +1,35 @@
+import { ICheckEmail } from '../../domain/usecase/check-email-usecase'
 import { ICheckEmailRepository } from '../protocols/check-email-repository'
 import { CheckEmailAdapter } from './check-email-adapter'
+
+const makeCheckEmailRepositoryStub = (): ICheckEmailRepository => {
+  class CheckEmailRepository implements ICheckEmailRepository {
+    find(email: string): Promise<object> {
+      return Promise.resolve({})
+    }
+  }
+  return new CheckEmailRepository()
+}
+
+interface ISut {
+  sut: ICheckEmail
+  checkEmailRepository: ICheckEmailRepository
+}
+
+const makeSut = (): ISut => {
+  const checkEmailRepository = makeCheckEmailRepositoryStub()
+  const sut = new CheckEmailAdapter(checkEmailRepository)
+
+  return {
+    sut,
+    checkEmailRepository,
+  }
+}
 
 describe('Email Check Validator', () => {
   // calls EmailCheckRepository with correct values
   it('should calls EmailCheckRepository with correct values', async () => {
-    class CheckEmailRepository implements ICheckEmailRepository {
-      find(email: string): Promise<object> {
-        return Promise.resolve({})
-      }
-    }
-
-    const checkEmailRepository = new CheckEmailRepository()
-    const sut = new CheckEmailAdapter(checkEmailRepository)
+    const { sut, checkEmailRepository } = makeSut()
 
     const findSpy = jest.spyOn(checkEmailRepository, 'find')
 
