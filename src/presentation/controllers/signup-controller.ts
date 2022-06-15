@@ -28,10 +28,17 @@ export class SignUpController implements IController {
       }
     }
 
-    // check if passwords match
+    const listGender = ['M', 'F', 'O', 'N']
+
+    if (!listGender.includes(httpRequest.body.gender)) {
+      return badRequest(422, new InvalidParamError('gender'))
+    }
+
     if (httpRequest.body.password !== httpRequest.body.passwordConfirmation) {
+      // check if passwords match
       return badRequest(422, new InvalidParamError('passwordConfirmation'))
     }
+
     try {
       const isValid = this.emailValidator.isValid(httpRequest.body.email)
       if (!isValid) {
