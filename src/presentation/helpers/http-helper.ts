@@ -12,3 +12,8 @@ export const ok = (statusCode: number, body: any): IHttpResponse => ({
   statusCode,
   body,
 })
+
+export const serverError = (statusCode: number, body: any): IHttpResponse => ({
+  statusCode,
+  body,
+})

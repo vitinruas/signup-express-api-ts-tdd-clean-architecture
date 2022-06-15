@@ -1,7 +1,7 @@
 import { IAccountEntitie } from '../../domain/entities/account-entitie'
 import { IAddAccount } from '../../domain/usecase/add-account-usecase'
 import { InvalidParamError, MissingParamError, ServerError } from '../errors'
-import { badRequest, ok } from '../helpers/http-helper'
+import { badRequest, ok, serverError } from '../helpers/http-helper'
 import {
   IController,
   IEmailValidator,
@@ -59,7 +59,7 @@ export class SignUpController implements IController {
       })
       return ok(201, createdAccount)
     } catch (error) {
-      return badRequest(500, new ServerError())
+      return serverError(500, new ServerError())
     }
   }
 }
