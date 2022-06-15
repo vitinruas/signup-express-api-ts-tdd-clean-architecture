@@ -252,7 +252,7 @@ describe('SignUpController', () => {
 
     expect(httpResponse.statusCode).toBe(500)
   })
-  // calls
+  // calls Add Account with correct values
   it('should calls Add Account with correct values', () => {
     const { sut, addAccount } = makeSut()
 
@@ -274,6 +274,29 @@ describe('SignUpController', () => {
       gender: 'N',
       email: 'any_email',
       password: 'any_password',
+    })
+  })
+  // return 201 and an account on success
+  it('should return a 201 success code and an account on success', () => {
+    const { sut } = makeSut()
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        gender: 'N',
+        email: 'any_email',
+        password: 'any_password',
+        passwordConfirmation: 'any_password',
+      },
+    }
+    const httpResponse = sut.perform(httpRequest)
+
+    expect(httpResponse.statusCode).toBe(201)
+    expect(httpResponse.body).toEqual({
+      id: 'valid_id',
+      name: 'valid_name',
+      gender: 'N',
+      email: 'valid_id',
+      password: 'valid_password',
     })
   })
 })
