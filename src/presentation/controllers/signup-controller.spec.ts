@@ -6,10 +6,12 @@ import {
 import { InvalidParamError, MissingParamError, ServerError } from '../errors'
 import { IController, IEmailValidator } from './signup-controller-protocols'
 import { SignUpController } from './signup-controller'
+import { ICheckEmail } from '../../domain/usecase/check-email-usecase'
 
 interface ISut {
   sut: IController
   emailValidator: IEmailValidator
+  checkEmail: ICheckEmail
   addAccount: IAddAccount
 }
 
@@ -20,6 +22,15 @@ const makeEmailValidatorStub = (): IEmailValidator => {
     }
   }
   return new EmailValidatorStub()
+}
+
+const makeCheckEmailStub = (): ICheckEmail => {
+  class CheckEmailStub implements ICheckEmail {
+    async check(email: string): Promise<boolean> {
+      return Promise.resolve(false)
+    }
+  }
+  return new CheckEmailStub()
 }
 
 const makeAddAccountStub = (): IAddAccount => {
@@ -39,11 +50,13 @@ const makeAddAccountStub = (): IAddAccount => {
 
 const makeSut = (): ISut => {
   const emailValidator = makeEmailValidatorStub()
+  const checkEmail = makeCheckEmailStub()
   const addAccount = makeAddAccountStub()
-  const sut = new SignUpController(emailValidator, addAccount)
+  const sut = new SignUpController(emailValidator, checkEmail, addAccount)
   return {
     sut,
     emailValidator,
+    checkEmail,
     addAccount,
   }
 }
@@ -234,6 +247,27 @@ describe('SignUpController', () => {
     await sut.perform(httpRequest)
 
     expect(isValid).toHaveBeenCalledWith('any_email')
+  })
+  // return 500 if Check Email throws
+  it('should return a 500 error code if Check Email throws', async () => {
+    const { sut, checkEmail } = makeSut()
+
+    jest.spyOn(checkEmail, 'check').mockImplementationOnce(() => {
+      return Promise.reject(new Error())
+    })
+
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        gender: 'N',
+        email: 'any_email',
+        password: 'any_password',
+        passwordConfirmation: 'any_password',
+      },
+    }
+    const httpResponse = await sut.perform(httpRequest)
+
+    expect(httpResponse.statusCode).toBe(500)
   })
   // return 500 if Add Account throws
   it('should return a 500 error code if Add Account throws', async () => {
