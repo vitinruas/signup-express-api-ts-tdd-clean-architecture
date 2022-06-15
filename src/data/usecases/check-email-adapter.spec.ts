@@ -4,8 +4,8 @@ import { CheckEmailAdapter } from './check-email-adapter'
 
 const makeCheckEmailRepositoryStub = (): ICheckEmailRepository => {
   class CheckEmailRepository implements ICheckEmailRepository {
-    find(email: string): Promise<object> {
-      return Promise.resolve({})
+    find(email: string): Promise<boolean> {
+      return Promise.resolve(false)
     }
   }
   return new CheckEmailRepository()
@@ -38,5 +38,19 @@ describe('Email Check Validator', () => {
     await sut.check(email)
 
     expect(findSpy).toHaveBeenCalledWith('any_email@mail.com')
+  })
+  // return false if the provided email already exists
+  it('should return false if the provided email already exists', async () => {
+    const { sut, checkEmailRepository } = makeSut()
+
+    jest
+      .spyOn(checkEmailRepository, 'find')
+      .mockReturnValueOnce(Promise.resolve(true))
+
+    const email = 'any_email@mail.com'
+
+    const response = await sut.check(email)
+
+    expect(response).toBe(true)
   })
 })
