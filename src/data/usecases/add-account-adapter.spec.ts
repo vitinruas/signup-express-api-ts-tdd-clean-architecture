@@ -20,10 +20,10 @@ const makeAddAccountRepositoryStub = (): IAddAccountRepository => {
   class AddAccountRepositoryStub implements IAddAccountRepository {
     async add(newAccountData: INewAccountData): Promise<IAccountEntitie> {
       return Promise.resolve({
-        id: 'any_id',
-        name: 'any_name',
+        id: 'created_id',
+        name: 'created_name',
         gender: 'N',
-        email: 'any_email@mail.com',
+        email: 'created_email@mail.com',
         password: 'hashed_password',
       })
     }
@@ -164,5 +164,25 @@ describe('Add Account Adapter', () => {
     const response = sut.add(newAccountData)
 
     await expect(response).rejects.toThrow()
+  })
+  // return an account on success
+  it('should return an account on success', async () => {
+    const { sut } = makeSut()
+
+    const newAccountData: INewAccountData = {
+      name: 'any_name',
+      gender: 'N',
+      email: 'any_email@mail.com',
+      password: 'any_password',
+    }
+
+    const response = await sut.add(newAccountData)
+    expect(response).toEqual({
+      id: 'created_id',
+      name: 'created_name',
+      gender: 'N',
+      email: 'created_email@mail.com',
+      password: 'hashed_password',
+    })
   })
 })
