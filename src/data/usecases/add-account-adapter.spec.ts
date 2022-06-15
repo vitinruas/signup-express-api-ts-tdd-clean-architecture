@@ -73,4 +73,21 @@ describe('Add Account Adapter', () => {
       password: 'any_password',
     })
   })
+  // calls Encrypter Adapter with correct values
+  it('should calls Encrypter Adapter with correct values', async () => {
+    const { sut, encrypterAdapter } = makeSut()
+
+    const encryptSpy = jest.spyOn(encrypterAdapter, 'encrypt')
+
+    const newAccountData: INewAccountData = {
+      name: 'any_name',
+      gender: 'N',
+      email: 'any_email@mail.com',
+      password: 'any_password',
+    }
+
+    await sut.add(newAccountData)
+
+    expect(encryptSpy).toBeCalledWith('any_password')
+  })
 })
