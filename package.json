@@ -8,6 +8,7 @@
     "@types/jest": "^28.1.1",
     "@types/node": "^17.0.42",
     "@types/validator": "^13.7.3",
+    "@types/mongoose": "^5.11.97",
     "@typescript-eslint/eslint-plugin": "^5.28.0",
     "@typescript-eslint/parser": "^5.28.0",
     "eslint": "^8.0.1",
@@ -38,6 +39,7 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "mongoose": "^6.3.8",
     "validator": "^13.7.0"
   }
 }
