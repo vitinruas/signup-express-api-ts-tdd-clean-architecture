@@ -15,6 +15,11 @@ afterAll(async () => {
   await mongoHelper.disconnect()
 })
 
+afterEach(async () => {
+  const collectionRef = mongoHelper.getCollection('accounts')
+  await collectionRef.deleteMany({})
+})
+
 const makeSut = (): IFindEmailRepository => new FindEmailRepository()
 const makeUserAccount = (): void => {
   const colletionRef = mongoHelper.getCollection('accounts')
@@ -25,7 +30,7 @@ const makeUserAccount = (): void => {
 }
 
 describe('FindEmailRepository', () => {
-  it('should find email and return if it exists', async () => {
+  test('should find email and return if it exists', async () => {
     const sut = makeSut()
     makeUserAccount()
 
@@ -34,5 +39,14 @@ describe('FindEmailRepository', () => {
     const response = await sut.find(emailToVerify)
 
     expect(response).toBeTruthy()
+  })
+  test("should return undefined if an account associated with a provided email doesn't exist  ", async () => {
+    const sut = makeSut()
+
+    const emailToVerify = 'any_email@mail.com'
+
+    const response = await sut.find(emailToVerify)
+
+    expect(response).toBe(undefined)
   })
 })
