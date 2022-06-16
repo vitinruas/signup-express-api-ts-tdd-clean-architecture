@@ -1,6 +1,7 @@
 import { mongoHelper } from '../../helpers/mongoHelper'
 import { FindEmailRepository } from '../find-email-repository'
 import { MongoMemoryServer } from 'mongodb-memory-server'
+import { IFindEmailRepository } from '../../../../../../data/protocols/check-email/find-email-repository-protocol'
 
 let mongoMemoryServer: MongoMemoryServer
 
@@ -14,14 +15,19 @@ afterAll(async () => {
   await mongoHelper.disconnect()
 })
 
+const makeSut = (): IFindEmailRepository => new FindEmailRepository()
+const makeUserAccount = (): void => {
+  const colletionRef = mongoHelper.getCollection('accounts')
+  colletionRef.insertOne({
+    name: 'pietro',
+    email: 'any_email@mail.com',
+  })
+}
+
 describe('FindEmailRepository', () => {
   it('should find email and return if it exists', async () => {
-    const colletionRef = mongoHelper.getCollection('accounts')
-    colletionRef.insertOne({
-      name: 'pietro',
-      email: 'any_email@mail.com',
-    })
-    const sut = new FindEmailRepository()
+    const sut = makeSut()
+    makeUserAccount()
 
     const emailToVerify = 'any_email@mail.com'
 
