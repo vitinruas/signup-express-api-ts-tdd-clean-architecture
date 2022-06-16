@@ -12,6 +12,7 @@ jest.mock('bcrypt', () => ({
 const makeSut = (salt: number = 12): IEncrypter => new BcryptAdapter(salt)
 
 describe('BcryptAdapter', () => {
+  // calls Bcrypt with correct values
   it('should calls Bcrypt with correct values', async () => {
     const sut = makeSut()
 
@@ -21,6 +22,7 @@ describe('BcryptAdapter', () => {
 
     expect(hashSpy).toHaveBeenCalledWith('any_password', 12)
   })
+  // return a hashed password
   it('should return a hashed password', async () => {
     const sut = makeSut()
 
@@ -28,6 +30,7 @@ describe('BcryptAdapter', () => {
 
     expect(response).toBe('hashed_password')
   })
+  // returns throw if Bcrypt throws
   it('should returns throw if Bcrypt throws', async () => {
     const sut = makeSut()
 
