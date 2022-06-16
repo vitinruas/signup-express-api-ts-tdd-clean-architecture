@@ -19,4 +19,12 @@ describe('BcryptAdapter', () => {
 
     expect(hashSpy).toHaveBeenCalledWith('any_password', 12)
   })
+  it('should return a hashed password', async () => {
+    const salt = 12
+    const sut = new BcryptAdapter(salt)
+
+    const response = await sut.encrypt('any_password')
+
+    expect(response).toBe('hashed_password')
+  })
 })
