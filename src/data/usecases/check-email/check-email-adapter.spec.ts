@@ -1,11 +1,11 @@
 import {
   ICheckEmail,
-  ICheckEmailRepository,
+  IFindEmailRepository,
 } from './check-email-adapter-protocols'
 import { CheckEmailAdapter } from './check-email-adapter'
 
-const makeCheckEmailRepositoryStub = (): ICheckEmailRepository => {
-  class CheckEmailRepository implements ICheckEmailRepository {
+const makeCheckEmailRepositoryStub = (): IFindEmailRepository => {
+  class CheckEmailRepository implements IFindEmailRepository {
     find(email: string): Promise<boolean> {
       return Promise.resolve(false)
     }
@@ -15,7 +15,7 @@ const makeCheckEmailRepositoryStub = (): ICheckEmailRepository => {
 
 interface ISut {
   sut: ICheckEmail
-  checkEmailRepository: ICheckEmailRepository
+  checkEmailRepository: IFindEmailRepository
 }
 
 const makeSut = (): ISut => {

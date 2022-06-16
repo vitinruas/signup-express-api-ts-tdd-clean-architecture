@@ -12,8 +12,8 @@ import {
 import { ParamAlreadyExistsError } from '../errors/param-exists-error'
 
 export class SignUpController implements IController {
-  private readonly checkEmail: ICheckEmail
   private readonly emailValidator: IEmailValidator
+  private readonly checkEmail: ICheckEmail
   private readonly addAccount: IAddAccount
   constructor(
     emailValidator: IEmailValidator,

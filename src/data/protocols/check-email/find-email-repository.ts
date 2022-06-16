@@ -1,3 +1,3 @@
-export interface ICheckEmailRepository {
+export interface IFindEmailRepository {
   find(email: string): Promise<boolean>
 }
