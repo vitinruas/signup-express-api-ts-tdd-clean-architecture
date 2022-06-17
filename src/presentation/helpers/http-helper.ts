@@ -5,7 +5,7 @@ export const badRequest = (
   error: Error,
 ): IHttpResponse => ({
   statusCode,
-  body: error,
+  body: error.message,
 })
 
 export const ok = (statusCode: number, body: any): IHttpResponse => ({
@@ -13,7 +13,10 @@ export const ok = (statusCode: number, body: any): IHttpResponse => ({
   body,
 })
 
-export const serverError = (statusCode: number, body: any): IHttpResponse => ({
+export const serverError = (
+  statusCode: number,
+  error: Error,
+): IHttpResponse => ({
   statusCode,
-  body,
+  body: error.message,
 })
