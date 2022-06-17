@@ -15,10 +15,12 @@ class MongoHelper {
       .then(() => console.log('-> Disconnected from MongoDB server'))
   }
 
+  // get collection reference
   getCollection(collection: string): Collection {
     return mongoose.connection.collection(collection)
   }
 
+  // remove mongo id from documents
   map(document: any): any {
     const { _id, ...data } = document
     return Object.assign({}, data, { id: _id })

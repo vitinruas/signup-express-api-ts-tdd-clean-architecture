@@ -1,5 +1,5 @@
-import { IFindEmailRepository } from '../../../../../data/protocols/check-email/find-email-repository-protocol'
-import { mongoHelper } from '../helpers/mongoHelper'
+import { IFindEmailRepository } from './find-email-repository-protocols'
+import { mongoHelper } from '../../helpers/mongoHelper'
 
 export class FindEmailMongoRepository implements IFindEmailRepository {
   async find(email: string): Promise<string | undefined> {

@@ -1,7 +1,7 @@
 import { mongoHelper } from '../../helpers/mongoHelper'
-import { FindEmailMongoRepository } from '../find-email-repository'
 import { MongoMemoryServer } from 'mongodb-memory-server'
-import { IFindEmailRepository } from '../../../../../../data/protocols/check-email/find-email-repository-protocol'
+import { IFindEmailRepository } from './find-email-repository-protocols'
+import { FindEmailMongoRepository } from './find-email-repository'
 
 let mongoMemoryServer: MongoMemoryServer
 
@@ -30,6 +30,7 @@ const makeUserAccount = (): void => {
 }
 
 describe('FindEmailRepository', () => {
+  // return email if there is an account associated with it
   test('should find email and return if it exists', async () => {
     const sut = makeSut()
     makeUserAccount()
@@ -40,6 +41,7 @@ describe('FindEmailRepository', () => {
 
     expect(response).toBeTruthy()
   })
+  // don't return an email if there is no account associated with it
   test("should return undefined if an account associated with a provided email doesn't exist  ", async () => {
     const sut = makeSut()
 

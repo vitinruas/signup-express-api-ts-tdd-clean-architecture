@@ -1,8 +1,10 @@
 import { mongoHelper } from '../../helpers/mongoHelper'
 import { MongoMemoryServer } from 'mongodb-memory-server'
-import { AddAccountMongoRepository } from '../add-account-repository'
-import { INewAccountData } from '../../../../../../domain/usecase/add-account-usecase'
-import { IAddAccountRepository } from '../../../../../../data/protocols/add-account/add-account-repository-protocol'
+import { AddAccountMongoRepository } from './add-account-repository'
+import {
+  IAddAccountRepository,
+  INewAccountData,
+} from './add-account-repository-protocols'
 
 let mongoMemoryServer: MongoMemoryServer
 
@@ -24,6 +26,7 @@ afterEach(async () => {
 const makeSut = (): IAddAccountRepository => new AddAccountMongoRepository()
 
 describe('AddAccountMongoRepo', () => {
+  // return an account if it exists
   test('should return an account on success', async () => {
     const sut = makeSut()
 
