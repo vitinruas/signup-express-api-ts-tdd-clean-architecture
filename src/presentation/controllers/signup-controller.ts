@@ -55,6 +55,14 @@ export class SignUpController implements IController {
       return badRequest(422, new InvalidParamError('passwordConfirmation'))
     }
 
+    // check if password is more or equal than 8 caracters
+    if (password.length < 8) {
+      return badRequest(
+        422,
+        new InvalidParamError("Password can't be less than 8 caracters"),
+      )
+    }
+
     try {
       // check if the email is valid
       const isValid = this.emailValidator.isValid(email)
