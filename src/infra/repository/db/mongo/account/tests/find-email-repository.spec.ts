@@ -1,5 +1,5 @@
 import { mongoHelper } from '../../helpers/mongoHelper'
-import { FindEmailRepository } from '../find-email-repository'
+import { FindEmailMongoRepository } from '../find-email-repository'
 import { MongoMemoryServer } from 'mongodb-memory-server'
 import { IFindEmailRepository } from '../../../../../../data/protocols/check-email/find-email-repository-protocol'
 
@@ -20,7 +20,7 @@ afterEach(async () => {
   await collectionRef.deleteMany({})
 })
 
-const makeSut = (): IFindEmailRepository => new FindEmailRepository()
+const makeSut = (): IFindEmailRepository => new FindEmailMongoRepository()
 const makeUserAccount = (): void => {
   const colletionRef = mongoHelper.getCollection('accounts')
   colletionRef.insertOne({
