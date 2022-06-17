@@ -1,2 +1,2 @@
 import { json } from 'express'
-export default json()
+export const jsonMiddleware = json()
