@@ -1,7 +1,9 @@
 import { Express } from 'express'
-import { jsonMiddleware } from '../middlewares/body-parser-middleware'
-import { corsMiddleware } from '../middlewares/cors.middleware'
-import { contentTypeMiddleware } from '../middlewares/content-type-middleware'
+import {
+  jsonMiddleware,
+  corsMiddleware,
+  contentTypeMiddleware,
+} from '../middlewares/'
 
 export default (app: Express) => {
   app.use(jsonMiddleware)
