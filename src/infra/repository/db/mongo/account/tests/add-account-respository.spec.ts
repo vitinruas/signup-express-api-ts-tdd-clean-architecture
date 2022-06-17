@@ -2,6 +2,7 @@ import { mongoHelper } from '../../helpers/mongoHelper'
 import { MongoMemoryServer } from 'mongodb-memory-server'
 import { AddAccountMongoRepository } from '../add-account-repository'
 import { INewAccountData } from '../../../../../../domain/usecase/add-account-usecase'
+import { IAddAccountRepository } from '../../../../../../data/protocols/add-account/add-account-repository-protocol'
 
 let mongoMemoryServer: MongoMemoryServer
 
@@ -20,9 +21,11 @@ afterEach(async () => {
   await collectionRef.deleteMany({})
 })
 
+const makeSut = (): IAddAccountRepository => new AddAccountMongoRepository()
+
 describe('AddAccountMongoRepo', () => {
   test('should return an account on success', async () => {
-    const sut = new AddAccountMongoRepository()
+    const sut = makeSut()
 
     const newAccounData: INewAccountData = {
       name: 'any_name',
