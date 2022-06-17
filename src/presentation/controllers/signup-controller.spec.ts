@@ -188,6 +188,26 @@ describe('SignUpController', () => {
       new InvalidParamError('passwordConfirmation'),
     )
   })
+  // return 422 if password length less than 8 caracters
+  it('should return a 422 error code if password length less than 8 caracters', async () => {
+    const { sut } = makeSut()
+
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        gender: 'N',
+        email: 'any_email',
+        password: 'short',
+        passwordConfirmation: 'short',
+      },
+    }
+    const httpResponse = await sut.perform(httpRequest)
+
+    expect(httpResponse.statusCode).toBe(422)
+    expect(httpResponse.body).toEqual(
+      new InvalidParamError("Password can't be less than 8 caracters"),
+    )
+  })
   // return 422 if invalid email is provided
   it('should return a 422 error code if invalid email is provided', async () => {
     const { sut, emailValidator } = makeSut()
