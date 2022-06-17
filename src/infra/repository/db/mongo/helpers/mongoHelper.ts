@@ -18,6 +18,11 @@ class MongoHelper {
   getCollection(collection: string): Collection {
     return mongoose.connection.collection(collection)
   }
+
+  map(document: any): any {
+    const { _id, ...data } = document
+    return Object.assign({}, data, { id: _id })
+  }
 }
 
 export const mongoHelper = new MongoHelper()
