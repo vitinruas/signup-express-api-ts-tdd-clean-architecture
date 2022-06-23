@@ -6,12 +6,12 @@ My SignUp project. it's a part of a big project that's coming.
 
 Este é o meu projeto de Signup, é apenas uma parte de um projeto maior que está por vir.
 
-# --------------------------------------------------------------------------------------------------
+# ----------------------------------------------
 
 > There are an diagram in documentation/ directory
 > Há um diagrama no diretório documentation/
 
-# --------------------------------------------------------------------------------------------------
+# ----------------------------------------------
 
 > # EN: Main Flow
 
@@ -71,7 +71,7 @@ Este é o meu projeto de Signup, é apenas uma parte de um projeto maior que est
 6. Retornar código de status: 500
    Retornar uma mensagem: Erro interno do Servidor 500
 
-# --------------------------------------------------------------------------------------------------
+# ----------------------------------------------
 
 > ### EN: For run the API
 
