@@ -14,7 +14,7 @@ const makeFakeNewAccountData = (
   const newAccountData: INewAccountData = {
     name: 'any_name',
     gender: 'N',
-    email: 'any_email@gmail.com',
+    email: 'any_email@mail.com',
     password: 'any_password',
   }
   if (withCriptography) {
