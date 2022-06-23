@@ -8,6 +8,11 @@ Este é o meu projeto de Signup, é apenas uma parte de um projeto maior que est
 
 # --------------------------------------------------------------------------------------------------
 
+> There are an diagram in documentation/ directory
+> Há um diagrama no diretório documentation/
+
+# --------------------------------------------------------------------------------------------------
+
 > # EN: Main Flow
 
 1. API receives data from Client and check if it was provided;
