@@ -1,2 +1,5 @@
+export * from './add-account-adapter-protocols'
 export * from '../../protocols/add-account/add-account-repository-protocol'
 export * from '../../protocols/add-account/encrypter-protocol'
+export * from '../../../domain/entities/account-entitie'
+export * from '../../../domain/usecase/add-account-usecase'

@@ -1,11 +1,9 @@
-import { IAccountEntitie } from '../../../domain/entities/account-entitie'
-import {
-  IAddAccount,
-  INewAccountData,
-} from '../../../domain/usecase/add-account-usecase'
 import {
   IEncrypter,
   IAddAccountRepository,
+  IAddAccount,
+  INewAccountData,
+  IAccountEntitie,
 } from './add-account-adapter-protocols'
 
 export class AddAccountAdapter implements IAddAccount {
@@ -21,10 +19,10 @@ export class AddAccountAdapter implements IAddAccount {
   }
 
   async add(newAccountData: INewAccountData): Promise<IAccountEntitie> {
-    const hashedPassword = await this.encrypterAdapter.encrypt(
+    const hashedPassword: string = await this.encrypterAdapter.encrypt(
       newAccountData.password,
     )
-    const createdAccount = await this.addAccountRepository.add(
+    const createdAccount: IAccountEntitie = await this.addAccountRepository.add(
       Object.assign({}, newAccountData, { password: hashedPassword }),
     )
     return createdAccount
