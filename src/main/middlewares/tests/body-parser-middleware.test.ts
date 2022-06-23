@@ -2,6 +2,7 @@ import request from 'supertest'
 import app from '../../config/app'
 
 describe('Body Parser Middleware', () => {
+  // should parser body as Json
   test('should parser body as json', async () => {
     const value = { name: 'Mary' }
     app.post('/body_parser_test', (request, response) => {
