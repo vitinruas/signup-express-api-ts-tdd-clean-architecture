@@ -1,45 +1,46 @@
-import { BcryptAdapter } from './bcrypt-adapter'
-// eslint-disable-next-line no-unused-vars
 import bcrypt from 'bcrypt'
 import { IEncrypter } from '../../../data/protocols/add-account/encrypter-protocol'
+import { BcryptAdapter } from './bcrypt-adapter'
+
+const makeFakeValidPassword = (): string => 'any_password'
+const makeFakeHashedPassword = (): string => 'hashed_password'
 
 jest.mock('bcrypt', () => ({
   async hash(password: string): Promise<string> {
-    return Promise.resolve('hashed_password')
+    return Promise.resolve(makeFakeHashedPassword())
   },
 }))
 
 const makeSut = (salt: number = 12): IEncrypter => new BcryptAdapter(salt)
 
 describe('BcryptAdapter', () => {
-  // calls Bcrypt with correct values
-  it('should calls Bcrypt with correct values', async () => {
-    const sut = makeSut()
-
+  // call Bcrypt with correct values
+  it('should call Bcrypt with correct values', async () => {
+    const sut: IEncrypter = makeSut()
     const hashSpy = jest.spyOn(bcrypt, 'hash')
 
-    await sut.encrypt('any_password')
+    await sut.encrypt(makeFakeValidPassword())
 
-    expect(hashSpy).toHaveBeenCalledWith('any_password', 12)
+    expect(hashSpy).toHaveBeenCalledWith(makeFakeValidPassword(), 12)
   })
-  // return a hashed password
-  it('should return a hashed password', async () => {
-    const sut = makeSut()
 
-    const response = await sut.encrypt('any_password')
-
-    expect(response).toBe('hashed_password')
-  })
-  // returns throw if Bcrypt throws
-  it('should returns throw if Bcrypt throws', async () => {
-    const sut = makeSut()
-
+  // return throw if Bcrypt throws
+  it('should return throw if Bcrypt throws', async () => {
+    const sut: IEncrypter = makeSut()
     jest.spyOn(bcrypt, 'hash').mockImplementationOnce(() => {
       return Promise.reject(new Error())
     })
 
-    const response = sut.encrypt('any_password')
+    const response: Promise<string> = sut.encrypt(makeFakeValidPassword())
 
-    expect(response).rejects.toThrow()
+    await expect(response).rejects.toThrow()
+  })
+
+  // return a hashed password
+  it('should return a hashed password', async () => {
+    const sut: IEncrypter = makeSut()
+    const response: string = await sut.encrypt(makeFakeValidPassword())
+
+    expect(response).toBe(makeFakeHashedPassword())
   })
 })
