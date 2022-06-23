@@ -1,3 +1,4 @@
+import { ServerError } from '../errors'
 import { IHttpResponse } from '../protocols/http-protocol'
 
 export const badRequest = (
@@ -18,5 +19,5 @@ export const serverError = (
   error: Error,
 ): IHttpResponse => ({
   statusCode,
-  body: error,
+  body: new ServerError(error.stack || 'Unknown server error'),
 })
