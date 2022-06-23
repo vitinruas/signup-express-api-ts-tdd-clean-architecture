@@ -4,10 +4,12 @@ import {
 } from './check-email-adapter-protocols'
 import { CheckEmailAdapter } from './check-email-adapter'
 
+const makeFakeValidEmail = (): string => 'any_email@mail.com'
+
 const makeCheckEmailRepositoryStub = (): IFindEmailRepository => {
   class CheckEmailRepository implements IFindEmailRepository {
     async find(email: string): Promise<string | undefined> {
-      return Promise.resolve('find_email@mail.com')
+      return Promise.resolve(undefined)
     }
   }
   return new CheckEmailRepository()
@@ -19,9 +21,9 @@ interface ISut {
 }
 
 const makeSut = (): ISut => {
-  const checkEmailRepository = makeCheckEmailRepositoryStub()
-  const sut = new CheckEmailAdapter(checkEmailRepository)
-
+  const checkEmailRepository: IFindEmailRepository =
+    makeCheckEmailRepositoryStub()
+  const sut: ICheckEmail = new CheckEmailAdapter(checkEmailRepository)
   return {
     sut,
     checkEmailRepository,
@@ -29,44 +31,46 @@ const makeSut = (): ISut => {
 }
 
 describe('Email Check Validator', () => {
-  // calls EmailCheckRepository with correct values
-  it('should calls EmailCheckRepository with correct values', async () => {
-    const { sut, checkEmailRepository } = makeSut()
-
+  // call EmailCheckRepository with correct values
+  it('should call EmailCheckRepository with correct values', async () => {
+    const { sut, checkEmailRepository }: ISut = makeSut()
     const findSpy = jest.spyOn(checkEmailRepository, 'find')
 
-    const email = 'any_email@mail.com'
+    await sut.check(makeFakeValidEmail())
 
-    await sut.check(email)
-
-    expect(findSpy).toHaveBeenCalledWith('any_email@mail.com')
+    expect(findSpy).toHaveBeenCalledWith(makeFakeValidEmail())
   })
-  // return false if the provided email already exists
-  it('should return false if the provided email already exists', async () => {
-    const { sut, checkEmailRepository } = makeSut()
 
+  // return true if the provided email already exists
+  it('should return true if the provided email already exists', async () => {
+    const { sut, checkEmailRepository }: ISut = makeSut()
     jest
       .spyOn(checkEmailRepository, 'find')
-      .mockReturnValueOnce(Promise.resolve('find_email@mail.com'))
+      .mockReturnValueOnce(Promise.resolve(makeFakeValidEmail()))
 
-    const email = 'any_email@mail.com'
+    const response: boolean = await sut.check(makeFakeValidEmail())
 
-    const response = await sut.check(email)
-
-    expect(response).toBeTruthy()
+    expect(response).toBe(true)
   })
+
   // return throw if CheckEmailRepository throws
   it('should return throw if CheckEmailRepository throws', async () => {
-    const { sut, checkEmailRepository } = makeSut()
-
+    const { sut, checkEmailRepository }: ISut = makeSut()
     jest.spyOn(checkEmailRepository, 'find').mockImplementationOnce(() => {
       return Promise.reject(new Error())
     })
 
-    const email = 'any_email@mail.com'
-
-    const response = sut.check(email)
+    const response: Promise<boolean> = sut.check(makeFakeValidEmail())
 
     await expect(response).rejects.toThrow()
+  })
+
+  // return false if the provided email is not exists
+  it('should return false if the provided email already exists', async () => {
+    const { sut }: ISut = makeSut()
+
+    const response: boolean = await sut.check(makeFakeValidEmail())
+
+    expect(response).toBe(false)
   })
 })
