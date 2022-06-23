@@ -1,13 +1,13 @@
-import { ICheckEmail } from '../../domain/usecase/check-email-usecase'
-import { IAccountEntitie } from '../../domain/entities/account-entitie'
-import { IAddAccount } from '../../domain/usecase/add-account-usecase'
 import { InvalidParamError, MissingParamError } from '../errors'
 import { badRequest, ok, serverError } from '../helpers/http-helper'
 import {
   IController,
   IEmailValidator,
+  ICheckEmail,
+  IAddAccount,
   IHttpRequest,
   IHttpResponse,
+  IAccountEntitie,
 } from './signup-controller-protocols'
 import { ParamAlreadyExistsError } from '../errors/param-exists-error'
 
@@ -15,6 +15,7 @@ export class SignUpController implements IController {
   private readonly emailValidator: IEmailValidator
   private readonly checkEmail: ICheckEmail
   private readonly addAccount: IAddAccount
+
   constructor(
     emailValidator: IEmailValidator,
     checkEmail: ICheckEmail,
@@ -27,7 +28,7 @@ export class SignUpController implements IController {
 
   async perform(httpRequest: IHttpRequest): Promise<IHttpResponse> {
     // check if all required fields were provided to controller
-    const requiredFields = [
+    const requiredFields: ReadonlyArray<string> = [
       'name',
       'gender',
       'email',
@@ -45,7 +46,7 @@ export class SignUpController implements IController {
       httpRequest.body
 
     // check if valid gender was provided
-    const listGender = ['M', 'F', 'O', 'N']
+    const listGender: ReadonlyArray<string> = ['M', 'F', 'O', 'N']
     if (!listGender.includes(gender)) {
       return badRequest(422, new InvalidParamError('gender'))
     }
@@ -65,13 +66,13 @@ export class SignUpController implements IController {
 
     try {
       // check if the email is valid
-      const isValid = this.emailValidator.isValid(email)
+      const isValid: boolean = this.emailValidator.isValid(email)
       if (!isValid) {
         return badRequest(422, new InvalidParamError('email'))
       }
 
       // check if the provided email already exists
-      const alreadyExists = await this.checkEmail.check(email)
+      const alreadyExists: boolean = await this.checkEmail.check(email)
       if (alreadyExists) {
         return badRequest(400, new ParamAlreadyExistsError('email'))
       }

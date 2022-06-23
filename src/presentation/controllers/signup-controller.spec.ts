@@ -1,18 +1,19 @@
-import { IAccountEntitie } from '../../domain/entities/account-entitie'
 import {
-  IAddAccount,
-  INewAccountData,
-} from '../../domain/usecase/add-account-usecase'
-import { InvalidParamError, MissingParamError } from '../errors'
+  InvalidParamError,
+  MissingParamError,
+  ParamAlreadyExistsError,
+} from '../errors'
 import {
   IController,
   IEmailValidator,
+  ICheckEmail,
+  IAddAccount,
   IHttpRequest,
   IHttpResponse,
+  INewAccountData,
+  IAccountEntitie,
 } from './signup-controller-protocols'
 import { SignUpController } from './signup-controller'
-import { ICheckEmail } from '../../domain/usecase/check-email-usecase'
-import { ParamAlreadyExistsError } from '../errors/param-exists-error'
 import { badRequest, serverError } from '../helpers'
 
 // fake valid data will be used for success requests
@@ -57,7 +58,7 @@ const makeFakeCustomRequest = (
 // it'll be used for generic errors.
 // Example: MongoDB library throws, is an error unknown
 const makeFakeGenericError = (stack?: string): Error => {
-  const error = new Error()
+  const error: Error = new Error()
   if (stack) error.stack = stack
   return error
 }
@@ -109,10 +110,14 @@ interface ISut {
 }
 
 const makeSut = (): ISut => {
-  const emailValidator = makeEmailValidatorStub()
-  const checkEmail = makeCheckEmailStub()
-  const addAccount = makeAddAccountStub()
-  const sut = new SignUpController(emailValidator, checkEmail, addAccount)
+  const emailValidator: IEmailValidator = makeEmailValidatorStub()
+  const checkEmail: ICheckEmail = makeCheckEmailStub()
+  const addAccount: IAddAccount = makeAddAccountStub()
+  const sut: IController = new SignUpController(
+    emailValidator,
+    checkEmail,
+    addAccount,
+  )
   return {
     sut,
     emailValidator,
@@ -124,7 +129,7 @@ const makeSut = (): ISut => {
 describe('SignUpController', () => {
   // return 400 if name wasn't provided
   it('should return a 400 error code if no name is provided', async () => {
-    const { sut } = makeSut()
+    const { sut }: ISut = makeSut()
 
     const httpResponse: IHttpResponse = await sut.perform(
       makeFakeCustomRequest('name'),
