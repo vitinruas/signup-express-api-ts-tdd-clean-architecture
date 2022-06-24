@@ -103,4 +103,15 @@ describe('LogControllerDecorator', () => {
 
     expect(logServerErrorSpy).toHaveBeenCalledWith(genericError.stack)
   })
+
+  // return the same response that Controller
+  test('should return the same response that Controller', async () => {
+    const { sut }: ISut = makeSut()
+
+    const httpResponse: IHttpResponse = await sut.perform(
+      makeFakeValidRequest(),
+    )
+
+    expect(httpResponse).toEqual(makeFakeSuccessResponse())
+  })
 })
