@@ -8,9 +8,9 @@ Este é o meu projeto de Signup, é apenas uma parte de um projeto maior que est
 
 # ----------------------------------------------
 
-> ### There are an diagram in documentation/ directory
+> ### EN: There are an diagram in documentation/ directory
 >
-> ### Há um diagrama no diretório documentation/
+> ### PT-BR: Há um diagrama no diretório documentation/
 
 # ----------------------------------------------
 
