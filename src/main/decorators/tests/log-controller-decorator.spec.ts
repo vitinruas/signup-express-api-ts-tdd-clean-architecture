@@ -7,6 +7,7 @@ import {
   IHttpRequest,
   IHttpResponse,
 } from '../log-controller-decorator-protocols'
+import { serverError } from '../../../presentation/helpers'
 
 let mongoMemoryServer: MongoMemoryServer
 
@@ -36,6 +37,11 @@ const makeFakeSuccessResponse = (): IHttpResponse => ({
   body: null,
 })
 
+const makeGenericError = (): Error => {
+  const genericError = new Error()
+  genericError.stack = 'generic stack error'
+  return genericError
+}
 // mocks
 const makeControllerStub = (): IController => {
   class ControllerStub implements IController {
@@ -82,5 +88,19 @@ describe('LogControllerDecorator', () => {
     await sut.perform(makeFakeValidRequest())
 
     expect(performSpy).toHaveBeenCalledWith(makeFakeValidRequest())
+  })
+
+  // call LogRepository with stack error if Controller throws
+  test('should call LogRepository with stack error if Controller throws  ', async () => {
+    const { sut, controllerStub, logRepositoryStub }: ISut = makeSut()
+    const genericError = makeGenericError()
+    jest.spyOn(controllerStub, 'perform').mockImplementationOnce(() => {
+      return Promise.resolve(serverError(500, genericError))
+    })
+    const logServerErrorSpy = jest.spyOn(logRepositoryStub, 'logServerError')
+
+    await sut.perform(makeFakeValidRequest())
+
+    expect(logServerErrorSpy).toHaveBeenCalledWith(genericError.stack)
   })
 })
