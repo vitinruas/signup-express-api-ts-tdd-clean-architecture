@@ -4,7 +4,7 @@ My SignUp project. it's a part of a big project that's coming.
 
 # PT-BR: SignUp API com TDD, Clean Architecture, SOLID, AAA e outros...
 
-Este é o meu projeto de Signup, é apenas uma parte de um projeto maior que está por vir.
+Este é o meu projeto de cadastro de usuários, é apenas uma parte de um projeto maior que está por vir.
 
 # ----------------------------------------------
 
