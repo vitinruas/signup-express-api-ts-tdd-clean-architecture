@@ -1,6 +1,7 @@
 import { mongoHelper } from '../../helpers/mongoHelper'
 import { MongoMemoryServer } from 'mongodb-memory-server'
 import { LogControllerRepository } from './log-controller-repository'
+import { ILogRepository } from '../../../../../../main/decorators/log-controller-decorator-protocols'
 
 // fake connection
 beforeAll(async () => {
@@ -18,14 +19,17 @@ afterEach(async () => {
   await collectionRef.deleteMany({})
 })
 
+const makeSut = (): ILogRepository => new LogControllerRepository()
+
 describe('LogControllerRepository', () => {
   // add a log ocurrency to database
   test('should add a log ocurrency to database', async () => {
-    const sut = new LogControllerRepository()
+    const sut = makeSut()
     const collectionRef = mongoHelper.getCollection('serverErrors')
 
     await sut.logServerError('any_error')
     const qtyDocuments = await collectionRef.countDocuments()
+
     expect(qtyDocuments).toBe(1)
   })
 })
