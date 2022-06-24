@@ -64,8 +64,8 @@ Este é o meu projeto de Signup, é apenas uma parte de um projeto maior que est
 
 > #### Fluxo Alternativo: Campo já está em uso
 
-6. Return statusCode: 400
-   Return body: Campo já está em uso: (Nome do Campo)
+6. Retornar código de status: 400
+   Retornar uma mensagem: Campo já está em uso: (Nome do Campo)
 
 > #### Fluxo Alternativo: Erro de uma API externa ou Biblioteca
 
