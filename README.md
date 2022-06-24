@@ -81,7 +81,7 @@ Este é o meu projeto de Signup, é apenas uma parte de um projeto maior que est
 3. There is already default a URI;
 4. (if you want, optional): src/main/config/env.ts is where you must put your MongoDB URI;
 5. Run in your Terminal or CMD: [npm start] to run the API;
-6. You can use a GUI Client (Web, Mobile and others...), Postman or any Client to test that project;
+6. You can use a GUI Client (Web, Mobile and others...), Postman or any Client to test that project.
 
 > ### PT-BR: Para executar a API
 
