@@ -14,7 +14,7 @@ Este é o meu projeto de Signup, é apenas uma parte de um projeto maior que est
 
 # ----------------------------------------------
 
-> # EN: Main Flow
+> ## EN: Main Flow
 
 1. API receives data from Client and check if it was provided;
 2. Check if email is valid and check passwords match;
@@ -43,7 +43,7 @@ Este é o meu projeto de Signup, é apenas uma parte de um projeto maior que est
 6. Return statusCode: 500
    Return body: Unexpected Internal Error 500
 
-> # PT-BR: Fluxo principal de funcionamento
+> ## PT-BR: Fluxo principal de funcionamento
 
 1. API recebe dados do Cliente e verifica se foram fornecidos os dados obrigatórios;
 2. Verificar se o E-mail é válido e verifique se as senhas se coincidem;
@@ -74,7 +74,7 @@ Este é o meu projeto de Signup, é apenas uma parte de um projeto maior que est
 
 # ----------------------------------------------
 
-> ### EN: To run the API
+> ## EN: To run the API
 
 1. Run in your Terminal or CMD: [npm update] in the project root to install all necessary packages;
 2. To run this project is required MongoDB;
@@ -83,7 +83,7 @@ Este é o meu projeto de Signup, é apenas uma parte de um projeto maior que est
 5. Run in your Terminal or CMD: [npm start] to run the API;
 6. You can use a GUI Client (Web, Mobile and others...), Postman or any Client to test that project.
 
-> ### PT-BR: Para executar a API
+> ## PT-BR: Para executar a API
 
 1. Execute em seu Terminal ou CMD: [npm update] na raiz do projeto para instalar os pacotes necessários;
 2. Para executar esse projeto é obrigatório o MongoDB;
