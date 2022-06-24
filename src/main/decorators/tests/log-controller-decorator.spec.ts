@@ -25,13 +25,19 @@ afterEach(async () => {
   await collectionRef.deleteMany({})
 })
 
+const makeFakeValidRequest = (): IHttpRequest => ({
+  body: {},
+})
+
+const makeFakeSuccessResponse = (): IHttpResponse => ({
+  statusCode: 200,
+  body: null,
+})
+
 const makeControllerStub = (): IController => {
   class ControllerStub implements IController {
     async perform(httpRequest: IHttpRequest): Promise<IHttpResponse> {
-      return Promise.resolve({
-        statusCode: 200,
-        body: 'body-content',
-      })
+      return Promise.resolve(makeFakeSuccessResponse())
     }
   }
 
@@ -56,11 +62,7 @@ describe('LogControllerDecorator', () => {
 
     const performSpy = jest.spyOn(controllerStub, 'perform')
 
-    const httpRequest = {
-      body: 'any_value',
-    }
-
-    await sut.perform(httpRequest)
-    expect(performSpy).toHaveBeenCalledWith(httpRequest)
+    await sut.perform(makeFakeValidRequest())
+    expect(performSpy).toHaveBeenCalledWith(makeFakeValidRequest())
   })
 })
