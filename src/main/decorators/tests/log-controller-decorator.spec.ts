@@ -10,6 +10,7 @@ import {
 
 let mongoMemoryServer: MongoMemoryServer
 
+// fake connection
 beforeAll(async () => {
   mongoMemoryServer = await MongoMemoryServer.create()
   const uri: string = mongoMemoryServer.getUri()
@@ -25,6 +26,7 @@ afterEach(async () => {
   await collectionRef.deleteMany({})
 })
 
+// fake data
 const makeFakeValidRequest = (): IHttpRequest => ({
   body: {},
 })
@@ -34,6 +36,7 @@ const makeFakeSuccessResponse = (): IHttpResponse => ({
   body: null,
 })
 
+// mocks
 const makeControllerStub = (): IController => {
   class ControllerStub implements IController {
     async perform(httpRequest: IHttpRequest): Promise<IHttpResponse> {
@@ -53,16 +56,31 @@ const makeLogRepository = (): ILogRepository => {
   return new LogRepository()
 }
 
+interface ISut {
+  sut: IController
+  controllerStub: IController
+  logRepositoryStub: ILogRepository
+}
+
+const makeSut = (): ISut => {
+  const controllerStub: IController = makeControllerStub()
+  const logRepositoryStub: ILogRepository = makeLogRepository()
+  const sut = new LogControllerDecorator(controllerStub, logRepositoryStub)
+  return {
+    sut,
+    controllerStub,
+    logRepositoryStub,
+  }
+}
+
 describe('LogControllerDecorator', () => {
   // call Controller.perform with correct values
   test('should call Controller.perform with correct values', async () => {
-    const controllerStub = makeControllerStub()
-    const logRepositoryStub = makeLogRepository()
-    const sut = new LogControllerDecorator(controllerStub, logRepositoryStub)
-
+    const { sut, controllerStub }: ISut = makeSut()
     const performSpy = jest.spyOn(controllerStub, 'perform')
 
     await sut.perform(makeFakeValidRequest())
+
     expect(performSpy).toHaveBeenCalledWith(makeFakeValidRequest())
   })
 })
