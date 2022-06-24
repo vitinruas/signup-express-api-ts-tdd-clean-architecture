@@ -9,11 +9,9 @@ import {
 } from '../log-controller-decorator-protocols'
 import { serverError } from '../../../presentation/helpers'
 
-let mongoMemoryServer: MongoMemoryServer
-
 // fake connection
 beforeAll(async () => {
-  mongoMemoryServer = await MongoMemoryServer.create()
+  const mongoMemoryServer = await MongoMemoryServer.create()
   const uri: string = mongoMemoryServer.getUri()
   await mongoHelper.connect(uri)
 })
