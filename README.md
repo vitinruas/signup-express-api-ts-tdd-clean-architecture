@@ -76,7 +76,7 @@ Este é o meu projeto de Signup, é apenas uma parte de um projeto maior que est
 
 > ### EN: For run the API
 
-1. Run in your Terminal or CMD: [npm update] to install all necessary packages;
+1. Run in your Terminal or CMD: [npm update] in the project root to install all necessary packages;
 2. To run this project is required MongoDB;
 3. There is already default a URI;
 4. (if you want, optional): src/main/config/env.ts is where you must put your MongoDB URI;
@@ -85,7 +85,7 @@ Este é o meu projeto de Signup, é apenas uma parte de um projeto maior que est
 
 > ### PT-BR: Para executar a API
 
-1. Execute em seu Terminal ou CMD: [npm update] para instalar os pacotes necessários;
+1. Execute em seu Terminal ou CMD: [npm update] na raiz do projeto para instalar os pacotes necessários;
 2. Para executar esse projeto é obrigatório o MongoDB;
 3. Já está configurado a URI padrão do MongoDB;
 4. (E se você quiser, Opcional): src/main/config/env.ts é onde você deve colocar a sua URL do MongoDB;
