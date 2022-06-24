@@ -1,7 +1,7 @@
 import { ILogRepository } from '../../../../../../main/decorators/log-controller-decorator-protocols'
 import { mongoHelper } from '../../helpers/mongoHelper'
 
-export class LogControllerRepository implements ILogRepository {
+export class LogControllerMongoRepository implements ILogRepository {
   async logServerError(stack: string): Promise<void> {
     const collectionRef = mongoHelper.getCollection('serverErrors')
 
