@@ -74,7 +74,7 @@ Este é o meu projeto de Signup, é apenas uma parte de um projeto maior que est
 
 # ----------------------------------------------
 
-> ### EN: For run the API
+> ### EN: To run the API
 
 1. Run in your Terminal or CMD: [npm update] in the project root to install all necessary packages;
 2. To run this project is required MongoDB;
